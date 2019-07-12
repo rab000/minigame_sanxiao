@@ -24,13 +24,15 @@ public class UIBase : MonoBehaviour {
 
 	public virtual void OnClose(bool destroy = false)
 	{
-		Clear();
+		Dispose();
 
-		if (destroy)Destroy (gameObject);
-		else gameObject.SetActive(false);
+		if (destroy)
+            Destroy (gameObject);
+		else
+            gameObject.SetActive(false);
 
 	}
 
-	public virtual void Clear(){}
+	public virtual void Dispose(){}
 
 }
