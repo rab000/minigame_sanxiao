@@ -63,16 +63,36 @@ public class GameLayout : MonoBehaviour
 
     public static void Caculate()
     {
+        //计算背景块大小
+        //var h = OrignalTileH * MAX_NUM;
+        //float scale = h / GameAreaHeight;
+
+
         //未适配前H
         var h = OrignalTileH * MAX_NUM + SpaceH * (MAX_NUM - 1) + BoundSpaceH * 2;
 
         float scale = h / GameAreaHeight;
 
-        //计算后tileSize
+        //计算后tileSize，tile的大小需要
         float TargetTileH = OrignalTileH * scale;
         float TargetTileW = OrignalTileW * scale;
 
 
+        //开始计算中心点和左上点
+        //游戏区上下减就是中心，那么左上在哪，上左加间隔
+
+
+        //那么问题来了，前置的GameArea属性如何计算
+
+        //这里有个概念，是游戏可用区域，而不是真实游戏区域
+
+        //可用区域，直接上下锚点绝对位置+-一个固定间隔，这个间隔怎么确定，可以先用固定值，也可以是比例
+
+        //因为游戏类型的原因游戏真实高度，就是可操作游戏区域高度，这个没毛病
+
+
+        //接下来的问题，top，down ui会决定游戏区范围，能否在游戏开始前就计算
+        //ui高度是固定死的还是按比例
 
     }
 
