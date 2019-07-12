@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//safeArea
+
+//operatableGameArea
+
 public class GameLayout : MonoBehaviour
 {   
     private static int _HalfScreenW=-1;
@@ -41,6 +45,19 @@ public class GameLayout : MonoBehaviour
         return layout;
     }
 
+    private static float GameAreaTop;
+    private static float GameAreaLeft;
+    private static float GameAreaRight;
+    private static float GameAreaBottom;
+
+    private static float TileW;//世界单位
+    private static float TileH;
+
+    public static void Caculate()
+    {
+
+    }
+
 }
 
 public struct TLayout
@@ -53,6 +70,7 @@ public struct TLayout
     public float GameAreaLeft;
     public float GameAreaRight;
     public float TileW;
+    public float TileH;
     public Vector3 TileStartPos;
 
 }

@@ -5,24 +5,7 @@ using UnityEngine;
 public class GameRoot : MonoSingleton<GameRoot>
 {
 
-    private static GameRoot Ins;
-
     [HideInInspector]public Transform GameRootTrm;
-
-    public static GameRoot GetIns()
-    {
-        return Ins;
-    }
-
-    void Awake()
-    {
-        Ins = this;
-    }
-
-    void OnDestroy()
-    {
-        Ins = null;
-    }
 
     void Start()
     {

@@ -1,18 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class MapDate : MonoBehaviour
+﻿
+public class MapDate
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
+    public byte[] BGDate;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public byte[] TileDate;
+
 }

@@ -2,46 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AppMgr : MonoBehaviour
+public class AppMgr : MonoSingleton<AppMgr>
 {
 
-    #region 单例
-    static AppMgr ins;
-    public static AppMgr GetIns() { return ins; }
-    void Awake()
+    void Start()
     {
-        ins = this;
-        //PoolsMgr.Init();
-        
+        SetState(GameState.Game);
     }
-
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            NTest();
-        }
-    }
-
-    void OnDestroy() { ins = null; }
-    #endregion
-
 
     #region 游戏状态机
 
     public enum GameState
     {
-       a,
+       MainMenu,
+       Game,
        NULL
     }
 
     GameState curState = GameState.NULL;
     GameState preState = GameState.NULL;
 
-   
     public void SetState(GameState state)
     {
         if (state == curState) return;
+
         Log.i("SetState切换状态到:" + state);
 
         preState = curState;
@@ -87,12 +71,6 @@ public class AppMgr : MonoBehaviour
     }
 
     #endregion
-
-    //NTEST 模拟创建房间
-    public void NTest()
-    {
-       
-    }
 
     
 }
