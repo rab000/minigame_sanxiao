@@ -49,12 +49,30 @@ public class GameLayout : MonoBehaviour
     private static float GameAreaLeft;
     private static float GameAreaRight;
     private static float GameAreaBottom;
+    private static float GameAreaWidth;
+    private static float GameAreaHeight;
 
-    private static float TileW;//世界单位
-    private static float TileH;
+    private static float OrignalTileW;//世界单位
+    private static float OrignalTileH;
+
+    private const int MAX_NUM = 9;
+    private const float SpaceH_Scaler = 0.1f;
+    private static float SpaceH = OrignalTileH * SpaceH_Scaler;
+
+    private const float BoundSpaceH = 0.5f;
 
     public static void Caculate()
     {
+        //未适配前H
+        var h = OrignalTileH * MAX_NUM + SpaceH * (MAX_NUM - 1) + BoundSpaceH * 2;
+
+        float scale = h / GameAreaHeight;
+
+        //计算后tileSize
+        float TargetTileH = OrignalTileH * scale;
+        float TargetTileW = OrignalTileW * scale;
+
+
 
     }
 
