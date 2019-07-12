@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameMgr : MonoBehaviour
+public class AppMgr : MonoBehaviour
 {
 
     #region 单例
-    static GameMgr ins;
-    public static GameMgr GetIns() { return ins; }
+    static AppMgr ins;
+    public static AppMgr GetIns() { return ins; }
     void Awake()
     {
         ins = this;
@@ -91,14 +91,8 @@ public class GameMgr : MonoBehaviour
     //NTEST 模拟创建房间
     public void NTest()
     {
-        StartCoroutine(DelayCreateRoom());
+       
     }
 
-    IEnumerator DelayCreateRoom()
-    {
-        yield return 0;
-
-        Game.Ins.CreateRoom("1");
-         
-    }
+    
 }

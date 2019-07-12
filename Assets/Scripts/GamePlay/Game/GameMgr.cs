@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour
+public class GameMgr : MonoSingleton<GameMgr>
 {
     private static GameObject BoardGo;
     
@@ -12,37 +12,18 @@ public class Board : MonoBehaviour
 
     [SerializeField] private Transform bgSelRoot;
 
-    private int mapSize;
-
-    void Start()
+    private void Create(MapDate date)
     {
-        Debug.Log("Board. start");
+       
     }
 
-    public static Board CreateBoard(Transform parentTrm, int mapSize = 10)
+    public void Switch()
     {
 
-        if (null == BoardGo)
-        {
-            BoardGo = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/game/board"));
-            BoardGo.name = "board";
-        }
-        else
-        {
-            BoardGo.SetActive(true);
-        }
+    }
 
-        BoardGo.transform.SetParent(parentTrm);
-
-        var _board = BoardGo.GetComponent<Board>();
-
-        _board.mapSize = mapSize;
-
-        _board.FillBgTile(mapSize);
-
-        _board.FillSelTile(mapSize);
-
-        return _board;
+    public void Exit()
+    {
 
     }
 
@@ -78,29 +59,9 @@ public class Board : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// 清理棋子
-    /// </summary>
-    public void ClearTile()
-    {
-        //棋子回池
-    }
-
-    /// <summary>
-    /// 清理手牌
-    /// </summary>
-    public void ClearSelTile()
-    {
-        //棋子回池
-    }
-
-    public CardMgr GetCardMgr()
-    {
-        return bgSelRoot.gameObject.GetComponent<CardMgr>();
-    }
-
     public void Dispose()
     {
 
     }
+
 }

@@ -5,34 +5,16 @@ using UnityEngine;
 /// 正交相机默认size=5
 /// 根据不同分辨率来设置对应的size
 /// </summary>
-public class CameraMgr : MonoBehaviour
+public class CameraMgr : MonoSingleton<CameraMgr>
 {
 
     [SerializeField]
     private Camera _Camera;
 
-    
-   
-    private static CameraMgr Ins;
-
-    public static CameraMgr GetIns()
-    {
-        return Ins;
-    }
-
-    void Awake()
-    {
-        Ins = this;
-    }
 
     void Start()
     {
         ResizeCamera();
-    }
-
-    void OnDestroy()
-    {
-        Ins = null;
     }
 
     public Camera GetMainCamera()

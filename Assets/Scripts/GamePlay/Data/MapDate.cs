@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardMgr : MonoBehaviour
+public class MapDate : MonoBehaviour
 {
-
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Card Start!!");
+        
     }
 
     // Update is called once per frame

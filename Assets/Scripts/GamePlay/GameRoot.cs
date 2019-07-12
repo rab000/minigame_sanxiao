@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameRoot : MonoBehaviour
+public class GameRoot : MonoSingleton<GameRoot>
 {
 
     private static GameRoot Ins;
 
-    public Transform GameRootTrm;
+    [HideInInspector]public Transform GameRootTrm;
 
     public static GameRoot GetIns()
     {
@@ -21,16 +21,20 @@ public class GameRoot : MonoBehaviour
 
     void OnDestroy()
     {
-
+        Ins = null;
     }
 
     void Start()
     {
-        var go = new GameObject("gameMgr");
-        go.AddComponent<GameMgr>();
-        go.AddComponent<Game>();
+        var go = new GameObject("appMgr");
+        go.AddComponent<ThreadManager>();
+        go.AddComponent<AppMgr>();
         go.transform.SetParent(transform);
         GameRootTrm = go.transform;
+
+        go = new GameObject("gopool");
+        go.AddComponent<Gopool>();
+        go.transform.SetParent(transform);
 
         //net
 

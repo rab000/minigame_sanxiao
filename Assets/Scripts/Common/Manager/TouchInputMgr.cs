@@ -28,7 +28,7 @@ public class TouchInputMgr : MonoBehaviour {
 	private Camera MainCamera{
 		get{ 
 			if (null == _MainCamera)
-				_MainCamera = CameraMgr.GetIns ().GetMainCamera ();
+				_MainCamera = CameraMgr.Ins.GetMainCamera ();
 
 			return _MainCamera;
 		}
