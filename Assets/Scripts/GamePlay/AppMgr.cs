@@ -7,22 +7,22 @@ public class AppMgr : MonoSingleton<AppMgr>
 
     void Start()
     {
-        SetState(GameState.Game);
+        SetState(AppState.Game);
     }
 
     #region 游戏状态机
 
-    public enum GameState
+    public enum AppState
     {
        MainMenu,
        Game,
        NULL
     }
 
-    GameState curState = GameState.NULL;
-    GameState preState = GameState.NULL;
+    AppState curState = AppState.NULL;
+    AppState preState = AppState.NULL;
 
-    public void SetState(GameState state)
+    public void SetState(AppState state)
     {
         if (state == curState) return;
 
@@ -34,12 +34,16 @@ public class AppMgr : MonoSingleton<AppMgr>
 
         switch (curState)
         {
+            case AppState.Game:
+                UIManager.Ins.OpenWin("gameui");
+                //GameMgr.Ins.
+                break;
             default:
                 break;
         }
     }
 
-    public bool IsCurState(GameState state)
+    public bool IsCurState(AppState state)
     {
         if (curState == state) return true;
         else return false;
@@ -59,7 +63,7 @@ public class AppMgr : MonoSingleton<AppMgr>
         }
     }
 
-    void StateExit(GameState preState)
+    void StateExit(AppState preState)
     {
 
         Log.i("StateExit执行退出状态:" + preState);

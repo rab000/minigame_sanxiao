@@ -10,7 +10,7 @@ public class TestPanel2 : UIPanel
     {
         transform.Find("Button").GetComponent<Button>().onClick.AddListener(()=>{
             
-            UIManager.GetIns().ClosePanel("TestPanel2");
+            UIManager.Ins.ClosePanel("TestPanel2");
         });
     }
 

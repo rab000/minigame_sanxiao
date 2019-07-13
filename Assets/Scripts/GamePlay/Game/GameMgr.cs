@@ -5,26 +5,128 @@ using UnityEngine;
 public class GameMgr : MonoSingleton<GameMgr>
 {
     private static GameObject BoardGo;
-    
-    [SerializeField] private Transform bgTileRoot;
 
-    [SerializeField] private Transform tileRoot;
+    private Transform bgTileRoot;
 
-    [SerializeField] private Transform bgSelRoot;
+    private Transform tileRoot;
 
-    private void Create(MapDate date)
+    private int CurLevel = 0;
+
+    #region fsm
+    public enum GameState
     {
-       
+        init,
+        gaming,
+        result,
+        NULL
     }
 
-    public void Switch()
+    GameState curState = GameState.NULL;
+
+    GameState preState = GameState.NULL;
+
+    public void SetState(GameState state)
+    {
+        if (state == curState) return;
+
+        Log.i("GameMgr.SetState:" + state);
+
+        preState = curState;
+        StateExit(preState);
+        curState = state;
+
+        switch (curState)
+        {
+            case GameState.init:
+                Init();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public bool IsCurState(GameState state)
+    {
+        if (curState == state) return true;
+        else return false;
+    }
+
+    public void tStateUpdate()
+    {
+        StateUpdate();
+    }
+
+    public void StateUpdate()
+    {
+        switch (curState)
+        {
+            default:
+                break;
+        }
+    }
+
+    void StateExit(GameState preState)
     {
 
+        Log.i("StateExit执行退出状态:" + preState);
+        switch (preState)
+        {
+            default:
+                break;
+        }
+    }
+
+    #endregion
+
+    #region open,close
+    private void Open(int level)
+    {
+        CurLevel = level;
+        SetState(GameState.init);
+    }
+
+    //竞品中是退回到主界面才进入下一关，不存在转场
+    public void Switch(int level)
+    {
+        //NTODO 先处理当前关卡释放回收
+
+        CurLevel = level;
+
+        //SetState("Switch");
     }
 
     public void Exit()
     {
 
+    }
+
+    #endregion
+
+    #region init
+
+    private void Init()
+    {
+        UIManager.Ins.OpenWin("gameui", true, () =>
+        {
+            InitAfterUICreate();
+        });
+    }
+
+    private void InitAfterUICreate()
+    {
+        //计算布局
+
+        var gameui = UIManager.Ins.GetWindow<GameUI>("gameui");
+
+        TLayout layout = GameLayout.Caculate(gameui.TopHudPos,gameui.DownHudPos);
+
+        //创建节点
+
+        //载入关卡数据
+
+        //刷bg
+
+        //刷tile
     }
 
     private void FillBgTile(int mapSize)
@@ -47,10 +149,10 @@ public class GameMgr : MonoSingleton<GameMgr>
 
                 //tempGo.transform.position = Vector3.zero;
 
-                
+
             }
         }
-        
+
 
     }
 
@@ -59,9 +161,13 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     }
 
+    #endregion
+
     public void Dispose()
     {
-
+        CurLevel = 0;
+        curState = GameState.NULL;
+        preState = GameState.NULL;
     }
 
 }

@@ -8,7 +8,7 @@ public class TestMgr : MonoBehaviour
     void Start()
     {
 //        UIManager.GetIns().OpenWin("TestWin");
-        UIManager.GetIns().OpenPanel("test/TestPanel");
+        UIManager.Ins.OpenPanel("test/TestPanel");
 //        UIManager.GetIns().OpenPanel("TestPanel2");
 
 

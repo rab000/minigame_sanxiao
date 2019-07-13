@@ -5,40 +5,36 @@ using UnityEngine;
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
 
-    private static T m_Instance = null;
+    private static T _Ins = null;
 
     public static T Ins
     {
         get
         {
-            if (m_Instance == null)
+            if (_Ins == null)
             {
-                m_Instance = GameObject.FindObjectOfType(typeof(T)) as T;
-                if (m_Instance == null)
+                _Ins = GameObject.FindObjectOfType(typeof(T)) as T;
+                if (_Ins == null)
                 {
-                    m_Instance = new GameObject("Singleton of " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
-                    m_Instance.Init();
+                    _Ins = new GameObject("Singleton4 " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
                 }
 
             }
-            return m_Instance;
+            return _Ins;
         }
     }
 
     private void Awake()
     {
 
-        if (m_Instance == null)
+        if (_Ins == null)
         {
-            m_Instance = this as T;
+            _Ins = this as T;
         }
     }
    
-    public virtual void Init() { }
-
-
     private void OnApplicationQuit()
     {
-        m_Instance = null;
+        _Ins = null;
     }
 }

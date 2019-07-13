@@ -35,15 +35,7 @@ public class GameLayout : MonoBehaviour
     }
     private const float DEFAULT_SCREEN_W = 720f;
     private const float DEFAULT_SCREEN_H = 1280f;
-    private const float DEFAULT_CAM_HALF_H = 5f;
-    private const float DEFAULT_CAM_H = DEFAULT_CAM_HALF_H * 2;
-    private const float DEFAULT_CAM_W = DEFAULT_SCREEN_W / DEFAULT_SCREEN_H * DEFAULT_CAM_H;
-   
-    private static TLayout GenerateLayout()
-    {
-        TLayout layout = new TLayout();
-        return layout;
-    }
+
 
     private static float GameAreaTop;
     private static float GameAreaLeft;
@@ -52,8 +44,8 @@ public class GameLayout : MonoBehaviour
     private static float GameAreaWidth;
     private static float GameAreaHeight;
 
-    private static float OrignalTileW;//世界单位
-    private static float OrignalTileH;
+    private static float OrignalTileW = 64f;//世界单位
+    private static float OrignalTileH = 64f;
 
     private const int MAX_NUM = 9;
     private const float SpaceH_Scaler = 0.1f;
@@ -61,8 +53,10 @@ public class GameLayout : MonoBehaviour
 
     private const float BoundSpaceH = 0.5f;
 
-    public static void Caculate()
+    public static TLayout Caculate(Vector3 topHudPos,Vector3 downHudPos)
     {
+        TLayout layout = new TLayout();
+
         //计算背景块大小
         //var h = OrignalTileH * MAX_NUM;
         //float scale = h / GameAreaHeight;
@@ -94,13 +88,14 @@ public class GameLayout : MonoBehaviour
         //接下来的问题，top，down ui会决定游戏区范围，能否在游戏开始前就计算
         //ui高度是固定死的还是按比例
 
+        return layout;
+
     }
 
 }
 
 public struct TLayout
 {
-    public float CamSize;
     public float GameAreaW;
     public float GameAreaH;
     public float GameAreaTop;

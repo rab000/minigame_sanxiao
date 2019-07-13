@@ -1,20 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/// <summary>
-/// 正交相机默认size=5
-/// 根据不同分辨率来设置对应的size
-/// </summary>
+
 public class CameraMgr : MonoSingleton<CameraMgr>
 {
 
     [SerializeField]
     private Camera _Camera;
 
+    public const float CameraHalfH = 5f;
 
-    void Start()
-    {
-        ResizeCamera();
+    public const float CameraH = CameraHalfH * 2;
+
+    private static float _CameraW = 0;
+    public static float CameraW {
+        get
+        {
+            if (_CameraW == 0)
+            {
+                _CameraW = Screen.width / Screen.height * CameraH;
+            }
+            return _CameraW;
+        }
     }
 
     public Camera GetMainCamera()
@@ -22,12 +29,5 @@ public class CameraMgr : MonoSingleton<CameraMgr>
         return _Camera;
     }
 
-    public void ResizeCamera()
-    {
-        //_Camera.orthographicSize = GameLayout.GetResizeCameraSize();
-    }
-
-    // 750 * 1334
-
-
+    
 }

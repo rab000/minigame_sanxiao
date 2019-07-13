@@ -6,25 +6,26 @@ using System;
 /// 1 包含所有UI Window的引用
 /// 2 控制UI 显示，隐藏
 /// </summary>
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoSingleton<UIManager> {
 	
 	private static bool BeShowLog = true;
 
-	#region mono
+    #region mono
 
-	static UIManager ins;
+    Canvas _Canvas;
 
-	void Awake(){ins = this;}
+    Transform WinTrm;
 
-	void OnDestroy(){ins = null;}
+    Transform PanelTrm;
 
-	public static UIManager GetIns(){return ins;}
-
-    [SerializeField] Canvas _Canvas;
-
-    [SerializeField]Transform WinTrm;
-
-	[SerializeField]Transform PanelTrm;
+    void Awake()
+    {
+        var canvasGo = GameObject.Find("Canvas");
+        var canvasTrm = canvasGo.transform;
+        _Canvas = canvasGo.GetComponent<Canvas>();
+        WinTrm = canvasTrm.Find("winroot");
+        PanelTrm = canvasTrm.Find("panelroot");
+    }
 
 	#endregion 
 
@@ -35,7 +36,7 @@ public class UIManager : MonoBehaviour {
 
 	private Dictionary<string,UIWin> winDic = new Dictionary<string,UIWin>();
 
-	public void OpenWin(string winName,bool destroyPreWin = true)
+    public void OpenWin(string winName, bool destroyPreWin = true, Action OnOpen = null)
 	{
 		CloseCurWin(destroyPreWin);
 
@@ -44,10 +45,15 @@ public class UIManager : MonoBehaviour {
 			Log.i ("UIManager", "OpenWin", "打开已存在win winName" + winName, BeShowLog);
 			winDic [winName].OnOpen();
 
-		}
+            OnOpen?.Invoke();
+
+        }
 		else
 		{
 			Log.i ("UIManager", "OpenWin", "打开不存在win winName" + winName, BeShowLog);
+
+            //NTODO 这里可以考虑剥离出来，由加载器统一加载，加载器来决定最终加载位置
+            //只传入相对路径
 
 			var winGo = Instantiate(Resources.Load ("Prefabs/ui/win/"+winName)) as GameObject;
 
@@ -60,7 +66,10 @@ public class UIManager : MonoBehaviour {
 
 			winDic.Add (winName,win);
 
-		}
+            win.OnOpen();
+
+            OnOpen?.Invoke();
+        }
 	}
 
 	public void CloseCurWin(bool destroy = true)
