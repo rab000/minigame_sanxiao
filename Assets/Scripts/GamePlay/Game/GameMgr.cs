@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GameMgr : MonoSingleton<GameMgr>
 {
-    private static GameObject BoardGo;
-
+    
     private Transform bgTileRoot;
 
     private Transform tileRoot;
@@ -116,33 +115,6 @@ public class GameMgr : MonoSingleton<GameMgr>
     //两种切换方式，遮挡切换，不遮挡切换，不能用非遮挡，因为地图形状不同，不方便过度
     //所以一般处理是遮挡(toon)或者退出到menu(消消乐)
 
-    private void Init()
-    {
-        
-
-        UIManager.Ins.OpenWin("gameui", true, () =>
-        {
-            InitAfterUICreate();
-        });
-    }
-
-    private void InitAfterUICreate()
-    {
-        //计算布局
-
-        var gameui = UIManager.Ins.GetWindow<GameUI>("gameui");
-
-        TLayout layout = GameLayout.Caculate(gameui.TopHudPos,gameui.DownHudPos);
-
-        //载入关卡数据
-        //
-
-
-        //刷bg
-
-        //刷tile
-    }
-
     private void CreateGameRoot()
     {
         if (null == bgTileRoot)
@@ -158,44 +130,63 @@ public class GameMgr : MonoSingleton<GameMgr>
             tileRoot = tileRootGo.transform;
             tileRoot.SetParent(GameRoot.Ins.GameRootTrm, false);
         }
-        
+
     }
 
-    private void FillBgTile(int mapSize)
+    private void Init()
     {
-        //需要解决起始点与间距问题
-
-        //起始点就是中心点-bgWidth/2的偏移量
-
-        //间距首先要确定两边间距，然后计算tileSize，和tile间间距
-
-        GameObject tempGo = null;
-
-        for (int i = 0; i < mapSize; i++)
+        UIManager.Ins.OpenWin("gameui", true, () =>
         {
-            for (int j = 0; j < mapSize; j++)
+            InitAfterUICreate();
+        });
+    }
+
+    private void InitAfterUICreate()
+    {
+        //计算布局
+
+        var gameui = UIManager.Ins.GetWindow<GameUI>("gameui");
+
+        TLayout layout = GameLayout.CaculateLayout(gameui.TopHudPos,gameui.DownHudPos);
+
+        //NTODO 载入关卡数据
+        LoadMgr.Ins.LoadMapdate(CurLevel, InitMap);
+
+    }
+
+    private void InitMap(int[] mapdate)
+    {
+        for (int y = 0; y < GameLayout.MAX_NUM; y++)
+        {
+            for (int x = 0; x < GameLayout.MAX_NUM; x++)
             {
-                tempGo = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Prefabs/game/bgTile"));
+                int index = y * GameLayout.MAX_NUM + x;
 
-                tempGo.transform.SetParent(bgTileRoot);
+                int mapValue = mapdate[index];
 
-                //tempGo.transform.position = Vector3.zero;
+                GenerateBgTile(mapValue,x,y);
 
+                GenerateTile(mapValue,x,y);
 
             }
         }
 
-
     }
 
-    private void FillSelTile(int mapSize)
+
+    private void GenerateBgTile(int mapValue,int gridX,int gridY)
+    {
+        //NTODO ? bg能否直接确定自己的边缘状态，根据这个就能判断bg类型(bgui)
+    }
+
+    private void GenerateTile(int mapValue, int gridX, int gridY)
     {
 
     }
 
     #endregion
 
-    public void Clear()
+    public void Clean()
     {
         CurLevel = 0;
         curState = GameState.NULL;
@@ -203,9 +194,9 @@ public class GameMgr : MonoSingleton<GameMgr>
     }
 
     //gameMgr,不退出游戏一般不用完整销毁，切关卡清理即可
-    public void Dispose()
-    {
+    //public void Dispose()
+    //{
         
-    }
+    //}
 
 }

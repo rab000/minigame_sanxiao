@@ -43,7 +43,7 @@ public class GameLayout : MonoBehaviour
     private const float BoundSpaceW = 0f;
 
     //行列最大tile数
-    private const int MAX_NUM = 9;
+    public const int MAX_NUM = 9;
 
     private const float SpaceH_Scaler = 0.1f;
 
@@ -51,7 +51,7 @@ public class GameLayout : MonoBehaviour
 
     private const float BoundSpaceH = 0.5f;
 
-    public static TLayout Caculate(Vector3 topHudPos,Vector3 downHudPos)
+    public static TLayout CaculateLayout(Vector3 topHudPos,Vector3 downHudPos)
     {
         TLayout layout = new TLayout();
 
