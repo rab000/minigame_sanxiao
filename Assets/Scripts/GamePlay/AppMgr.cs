@@ -35,8 +35,8 @@ public class AppMgr : MonoSingleton<AppMgr>
         switch (curState)
         {
             case AppState.Game:
-                UIManager.Ins.OpenWin("gameui");
-                //GameMgr.Ins.
+                //NTODO 这里要在ui做切换关卡操作
+                GameMgr.Ins.Open(1);
                 break;
             default:
                 break;

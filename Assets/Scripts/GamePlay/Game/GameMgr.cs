@@ -11,6 +11,8 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     private int CurLevel = 0;
 
+    private TLayout layout;
+
     protected override void Awake()
     {
         base.Awake();
@@ -86,7 +88,7 @@ public class GameMgr : MonoSingleton<GameMgr>
     #endregion
 
     #region open,close
-    private void Open(int level)
+    public void Open(int level)
     {
         CurLevel = level;
         SetState(GameState.init);
@@ -117,18 +119,19 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     private void CreateGameRoot()
     {
+        
         if (null == bgTileRoot)
         {
             var bgTileRootGo = new GameObject("bgTileRoot");
             bgTileRoot = bgTileRootGo.transform;
-            bgTileRoot.SetParent(GameRoot.Ins.GameRootTrm, false);
+            bgTileRoot.SetParent(transform, false);
         }
 
         if (null == tileRoot)
         {
             GameObject tileRootGo = new GameObject("tileRoot");
             tileRoot = tileRootGo.transform;
-            tileRoot.SetParent(GameRoot.Ins.GameRootTrm, false);
+            tileRoot.SetParent(transform, false);
         }
 
     }
@@ -147,7 +150,7 @@ public class GameMgr : MonoSingleton<GameMgr>
 
         var gameui = UIManager.Ins.GetWindow<GameUI>("gameui");
 
-        TLayout layout = GameLayout.CaculateLayout(gameui.TopHudPos,gameui.DownHudPos);
+        layout = GameLayout.CaculateLayout(gameui.TopHudPos,gameui.DownHudPos);
 
         //NTODO 载入关卡数据
         LoadMgr.Ins.LoadMapdate(CurLevel, InitMap);
@@ -173,10 +176,24 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     }
 
-
     private void GenerateBgTile(int mapValue,int gridX,int gridY)
     {
-        //NTODO ? bg能否直接确定自己的边缘状态，根据这个就能判断bg类型(bgui)
+        //NTODO bgTile外显的计算
+
+        //形容下bgTile的特殊处
+        //left，down，right都有方块时，具体的ui取决与bgTile是否在边缘，
+
+        var go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
+        var trm = go.transform;
+        trm.SetParent(bgTileRoot,false);
+
+        Vector3 pos = layout.TileStartPos;
+        float offx = gridX * layout.TileW;
+        float offy = gridY * layout.TileH;
+        pos.x = pos.x + offx;
+        pos.y = pos.y - offy;
+        trm.position = pos;
+
     }
 
     private void GenerateTile(int mapValue, int gridX, int gridY)

@@ -14,7 +14,7 @@ public enum TileColorEnum
     
 }
 
-//NTODO 这里还要考虑边缘,边缘与在tiles内部是不同的
+
 public enum TileBgEnum
 {
     top,
@@ -34,7 +34,7 @@ public enum TileBgEnum
     top_right_down,
     left_right_down,
 
-
     top_left_right_down,
 
 }
+

@@ -58,6 +58,7 @@ public class GameLayout : MonoBehaviour
         //--------------------游戏可用区域
         Vector3 sub = topHudPos - downHudPos;
         layout.UseableGameAreaH = sub.y;
+        Debug.Log("top:"+ topHudPos+" down:"+ downHudPos+" sub:"+ sub);
         layout.UseableGameAreaW = CameraMgr.CameraW - BoundSpaceW*2f;
         layout.UseableGameAreaLeft = 0 + BoundSpaceW;
         layout.UseableGameAreaRight = layout.UseableGameAreaLeft + layout.UseableGameAreaW;
@@ -84,9 +85,14 @@ public class GameLayout : MonoBehaviour
             var h = OrignalTileH * MAX_NUM;
             tileScale = h / layout.UseableGameAreaH;
         }
+
+        
+
         //自适应后tile的H,W
         layout.TileH = OrignalTileH * tileScale;
         layout.TileW = OrignalTileW * tileScale;
+
+        Debug.Log("bW:" + bAutoSizeW + " scale:" + tileScale+" tw:"+ layout.TileW + " th:"+ layout.TileH);
 
         //---------------------游戏区域
         layout.GameAreaH = layout.TileH * MAX_NUM;
@@ -107,6 +113,11 @@ public class GameLayout : MonoBehaviour
         }
 
         layout.TileStartPos = new Vector3(layout.GameAreaLeft, layout.GameAreaTop, 0);
+
+        var gg = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        gg.name = "ggggggg";
+        gg.transform.position = layout.TileStartPos;
+
 
         return layout;
 

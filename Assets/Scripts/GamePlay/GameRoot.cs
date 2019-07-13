@@ -9,11 +9,12 @@ public class GameRoot : MonoSingleton<GameRoot>
 
     void Start()
     {
-        var go = new GameObject("appMgr");
+        var go = gameObject;
         go.AddComponent<ThreadManager>();
         go.AddComponent<LoadMgr>();
         go.AddComponent<AppMgr>();
-        go.transform.SetParent(transform);
+        go.AddComponent<UIManager>();
+        go.AddComponent<GameMgr>();
         GameRootTrm = go.transform;
 
         go = new GameObject("gopool");
