@@ -37,18 +37,27 @@ public class GameLayout : MonoBehaviour
     private const float DEFAULT_SCREEN_H = 1280f;
 
 
-    private static float GameAreaTop;
-    private static float GameAreaLeft;
-    private static float GameAreaRight;
-    private static float GameAreaBottom;
-    private static float GameAreaWidth;
-    private static float GameAreaHeight;
+    //private static float GameAreaTop;
+    //private static float GameAreaLeft;
+    //private static float GameAreaRight;
+    //private static float GameAreaBottom;
+    //private static float GameAreaWidth;
+    //private static float GameAreaHeight;
 
-    private static float OrignalTileW = 64f;//世界单位
-    private static float OrignalTileH = 64f;
+    //tile原始大小，unity单位，64pixel, 100p/unit
+    private const float OrignalTileW = 0.64f;
+    private const float OrignalTileH = 0.64f;
+    //这个值是原始块的aspect，也是游戏区域的aspect(行列最大数相同的情况下)
+    private const float OrignalTileAspect = OrignalTileH / OrignalTileW;
 
+    //可用游戏区距离屏幕两端世界距离
+    private const float BoundSpaceW = 0f;
+
+    //行列最大tile数
     private const int MAX_NUM = 9;
+
     private const float SpaceH_Scaler = 0.1f;
+
     private static float SpaceH = OrignalTileH * SpaceH_Scaler;
 
     private const float BoundSpaceH = 0.5f;
@@ -57,19 +66,62 @@ public class GameLayout : MonoBehaviour
     {
         TLayout layout = new TLayout();
 
+        //--------------------游戏可用区域
+        Vector3 sub = topHudPos - downHudPos;
+        layout.UseableGameAreaH = sub.y;
+        layout.UseableGameAreaW = CameraMgr.CameraW - BoundSpaceW*2f;
+        layout.UseableGameAreaLeft = 0 + BoundSpaceW;
+        layout.UseableGameAreaRight = layout.UseableGameAreaLeft + layout.UseableGameAreaW;
+        layout.UseableGameAreaTop = topHudPos.y;
+        layout.UseableGameAreaDown = downHudPos.y;
+        layout.UseableGameAreaAspect = layout.UseableGameAreaH / layout.UseableGameAreaW;
+
+        //--------------------自适应后tile大小
+        //tile为自适应需要缩放的scale
+        float tileScale = 1f;
+        if (layout.UseableGameAreaAspect > OrignalTileAspect)
+        {
+            //可用区域aspect大于游戏区域(单个块的aspect)，以w为基准进行计算
+            var w = OrignalTileW * MAX_NUM;
+            tileScale = w / layout.UseableGameAreaW;
+        }
+        else
+        {
+            //可用区域aspect小于游戏区域(单个块的aspect)，以h为基准进行计算
+            var h = OrignalTileH * MAX_NUM;
+            tileScale = h / layout.UseableGameAreaH;
+        }
+        //自适应后tile的H,W
+        layout.TileH = OrignalTileH * tileScale;
+        layout.TileW = OrignalTileW * tileScale;
+
+        //---------------------游戏区域
+        layout.GameAreaH = layout.TileH * MAX_NUM;
+        layout.GameAreaW = layout.TileW * MAX_NUM;
+
+
+
+        //---------------------游戏区域左上点，用于填充tile时，确定(0,0)点位置
+
+
+        //游戏区域需要确定下用x计算还是y计算,取决于可用游戏区域，与块的长宽比
+        //
+
+        //可用游戏区域H基本>W,游戏区域aspect取决于块本身长宽比
+
         //计算背景块大小
         //var h = OrignalTileH * MAX_NUM;
         //float scale = h / GameAreaHeight;
 
 
         //未适配前H
-        var h = OrignalTileH * MAX_NUM + SpaceH * (MAX_NUM - 1) + BoundSpaceH * 2;
+        //var h = OrignalTileH * MAX_NUM + SpaceH * (MAX_NUM - 1) + BoundSpaceH * 2;
 
-        float scale = h / GameAreaHeight;
+        //float scale = h / GameAreaHeight;
 
         //计算后tileSize，tile的大小需要
-        float TargetTileH = OrignalTileH * scale;
-        float TargetTileW = OrignalTileW * scale;
+        //float TargetTileH = OrignalTileH * scale;
+        //float TargetTileW = OrignalTileW * scale;
 
 
         //开始计算中心点和左上点
@@ -96,14 +148,26 @@ public class GameLayout : MonoBehaviour
 
 public struct TLayout
 {
+
+    public float UseableGameAreaW;
+    public float UseableGameAreaH;
+    public float UseableGameAreaAspect;
+
+    public float UseableGameAreaTop;
+    public float UseableGameAreaDown;
+    public float UseableGameAreaLeft;
+    public float UseableGameAreaRight;
+
     public float GameAreaW;
     public float GameAreaH;
     public float GameAreaTop;
     public float GameAreaDown;
     public float GameAreaLeft;
     public float GameAreaRight;
+
     public float TileW;
     public float TileH;
+
     public Vector3 TileStartPos;
 
 }
