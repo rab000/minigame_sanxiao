@@ -24,7 +24,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
 
         if (_Ins == null)

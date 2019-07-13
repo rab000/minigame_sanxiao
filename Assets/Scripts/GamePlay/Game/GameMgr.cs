@@ -12,6 +12,14 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     private int CurLevel = 0;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        //创建节点
+        CreateGameRoot();
+    }
+
     #region fsm
     public enum GameState
     {
@@ -104,8 +112,14 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     #region init
 
+    //这里要考虑下二次创建，switch时这个流程问题
+    //两种切换方式，遮挡切换，不遮挡切换，不能用非遮挡，因为地图形状不同，不方便过度
+    //所以一般处理是遮挡(toon)或者退出到menu(消消乐)
+
     private void Init()
     {
+        
+
         UIManager.Ins.OpenWin("gameui", true, () =>
         {
             InitAfterUICreate();
@@ -120,13 +134,31 @@ public class GameMgr : MonoSingleton<GameMgr>
 
         TLayout layout = GameLayout.Caculate(gameui.TopHudPos,gameui.DownHudPos);
 
-        //创建节点
-
         //载入关卡数据
+        //
+
 
         //刷bg
 
         //刷tile
+    }
+
+    private void CreateGameRoot()
+    {
+        if (null == bgTileRoot)
+        {
+            var bgTileRootGo = new GameObject("bgTileRoot");
+            bgTileRoot = bgTileRootGo.transform;
+            bgTileRoot.SetParent(GameRoot.Ins.GameRootTrm, false);
+        }
+
+        if (null == tileRoot)
+        {
+            GameObject tileRootGo = new GameObject("tileRoot");
+            tileRoot = tileRootGo.transform;
+            tileRoot.SetParent(GameRoot.Ins.GameRootTrm, false);
+        }
+        
     }
 
     private void FillBgTile(int mapSize)
@@ -163,11 +195,17 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     #endregion
 
-    public void Dispose()
+    public void Clear()
     {
         CurLevel = 0;
         curState = GameState.NULL;
         preState = GameState.NULL;
+    }
+
+    //gameMgr,不退出游戏一般不用完整销毁，切关卡清理即可
+    public void Dispose()
+    {
+        
     }
 
 }

@@ -13,7 +13,12 @@ public class BaseTile : MonoBehaviour
 
     public Vector2 Pos;
 
-    void Start()
+    protected virtual void Awake()
+    {
+
+    }
+
+    protected virtual void Start()
     {
         
     }

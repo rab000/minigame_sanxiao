@@ -11,6 +11,7 @@ public class GameRoot : MonoSingleton<GameRoot>
     {
         var go = new GameObject("appMgr");
         go.AddComponent<ThreadManager>();
+        go.AddComponent<LoadMgr>();
         go.AddComponent<AppMgr>();
         go.transform.SetParent(transform);
         GameRootTrm = go.transform;
@@ -24,5 +25,7 @@ public class GameRoot : MonoSingleton<GameRoot>
         //other
 
     }
+
+
 
 }
