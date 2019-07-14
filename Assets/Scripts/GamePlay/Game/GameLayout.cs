@@ -58,35 +58,64 @@ public class GameLayout : MonoBehaviour
         //--------------------游戏可用区域
         Vector3 sub = topHudPos - downHudPos;
         layout.UseableGameAreaH = sub.y;
-        Debug.Log("top:"+ topHudPos+" down:"+ downHudPos+" sub:"+ sub);
         layout.UseableGameAreaW = CameraMgr.CameraW - BoundSpaceW*2f;
-        layout.UseableGameAreaLeft = 0 + BoundSpaceW;
-        layout.UseableGameAreaRight = layout.UseableGameAreaLeft + layout.UseableGameAreaW;
+        layout.UseableGameAreaLeft = 0 - CameraMgr.CameraW/2 + BoundSpaceW;
+        layout.UseableGameAreaRight = CameraMgr.CameraW / 2 - BoundSpaceW;
         layout.UseableGameAreaTop = topHudPos.y;
         layout.UseableGameAreaDown = downHudPos.y;
         layout.UseableGameAreaAspect = layout.UseableGameAreaH / layout.UseableGameAreaW;
-        layout.UseableGameAreaCenterX = layout.UseableGameAreaLeft + layout.UseableGameAreaW / 2;
-        layout.UseableGameAreaCenterY = layout.UseableGameAreaTop + layout.UseableGameAreaH / 2;
+        layout.UseableGameAreaCenterX = 0;//layout.UseableGameAreaLeft + layout.UseableGameAreaW / 2;
+        layout.UseableGameAreaCenterY = layout.UseableGameAreaTop - layout.UseableGameAreaH / 2;
+
+
+        //var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = new Vector3(layout.UseableGameAreaLeft, 0,0);
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "left";
+
+        //go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = new Vector3(layout.UseableGameAreaRight, 0, 0);
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "right";
+
+        //go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = new Vector3(0, layout.UseableGameAreaTop, 0);
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "top";
+
+        //go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = new Vector3(0, layout.UseableGameAreaDown, 0);
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "down";
+
+        //go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = topHudPos;
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "tophud";
+
+        //go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //go.transform.position = downHudPos;
+        //go.transform.localScale = Vector3.one * 0.5f;
+        //go.name = "downhud";
+
 
         //--------------------自适应后tile大小
         //tile为自适应需要缩放的scale
         float tileScale = 1f;
-
-        bool bAutoSizeW = layout.UseableGameAreaAspect > OrignalTileAspect ? true : false;
+       
+       bool bAutoSizeW = layout.UseableGameAreaAspect > OrignalTileAspect ? true : false;
         if (bAutoSizeW)
         {
             //可用区域aspect大于游戏区域(单个块的aspect)，以w为基准进行计算
             var w = OrignalTileW * MAX_NUM;
-            tileScale = w / layout.UseableGameAreaW;
+            tileScale = layout.UseableGameAreaW /w;
         }
         else
         {
             //可用区域aspect小于游戏区域(单个块的aspect)，以h为基准进行计算
             var h = OrignalTileH * MAX_NUM;
-            tileScale = h / layout.UseableGameAreaH;
+            tileScale = layout.UseableGameAreaH / h;
         }
-
-        
 
         //自适应后tile的H,W
         layout.TileH = OrignalTileH * tileScale;
@@ -114,9 +143,8 @@ public class GameLayout : MonoBehaviour
 
         layout.TileStartPos = new Vector3(layout.GameAreaLeft, layout.GameAreaTop, 0);
 
-        var gg = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        gg.name = "ggggggg";
-        gg.transform.position = layout.TileStartPos;
+        //Debug.Log("test--->StartPos:"+ layout.TileStartPos);
+
 
 
         return layout;

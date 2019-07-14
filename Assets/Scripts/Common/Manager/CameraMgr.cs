@@ -18,7 +18,8 @@ public class CameraMgr : MonoSingleton<CameraMgr>
         {
             if (_CameraW == 0)
             {
-                _CameraW = Screen.width / Screen.height * CameraH;
+                _CameraW = Screen.width * CameraH / Screen.height;
+                //Debug.Log("计算CameraW:  sw:"+ Screen.width+" sh:"+ Screen.height+" result:"+ _CameraW+" ch:"+CameraH);
             }
             return _CameraW;
         }

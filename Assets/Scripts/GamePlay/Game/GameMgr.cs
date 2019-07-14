@@ -176,6 +176,8 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     }
 
+   
+
     private void GenerateBgTile(int mapValue,int gridX,int gridY)
     {
         //NTODO bgTile外显的计算
@@ -184,15 +186,29 @@ public class GameMgr : MonoSingleton<GameMgr>
         //left，down，right都有方块时，具体的ui取决与bgTile是否在边缘，
 
         var go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
+
+
         var trm = go.transform;
-        trm.SetParent(bgTileRoot,false);
+        go.transform.SetParent(bgTileRoot,false);
 
         Vector3 pos = layout.TileStartPos;
+        
         float offx = gridX * layout.TileW;
         float offy = gridY * layout.TileH;
+
+        //var gg = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //gg.name = "sspp";
+        //gg.transform.position = pos;
+        //gg.transform.localScale = Vector3.one * 5;
+
+
+        Debug.Log("wh:"+ layout.TileW+" h:"+ layout.TileH);
+
         pos.x = pos.x + offx;
         pos.y = pos.y - offy;
-        trm.position = pos;
+        pos.z = 0;
+
+        go.transform.position = pos;
 
     }
 

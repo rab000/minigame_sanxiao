@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class GameUI : UIWin
 {
-    [HideInInspector]public Vector3 TopHudPos;
+    public Vector3 TopHudPos {
+        get {
+            return TopHudTrm.position;
+        }
+    }
 
-    [HideInInspector]public Vector3 DownHudPos;
+    public Vector3 DownHudPos {
+        get
+        {
+            return DownHudTrm.position;
+        }
+    }
 
     private Transform TopHudTrm;
 
@@ -15,16 +24,10 @@ public class GameUI : UIWin
     public override void Awake()
     {
         base.Awake();
-        //NTODO 下一步，这两个值拿的值与世界坐标有差距，这个时ui的世界坐标，跟3d不符
-        //貌似缺个ui世界坐标，到spr世界坐标的转换
         TopHudTrm = transform.Find("top/topHud");
-        TopHudPos = TopHudTrm.position;
-        DownHudTrm = transform.Find("down/downHud");
-        DownHudPos = DownHudTrm.position;
-        Debug.Log("gameui init posTop:"+ TopHudPos+" posDown:"+ DownHudPos);
-
         
-         
+        DownHudTrm = transform.Find("down/downHud");
+
     }
 
     
