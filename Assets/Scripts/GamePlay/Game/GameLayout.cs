@@ -4,33 +4,6 @@ using UnityEngine;
 
 public class GameLayout : MonoBehaviour
 {   
-    //private static int _HalfScreenW=-1;
-    //public static int HalfScreenW
-    //{
-    //    get
-    //    {
-    //        if (_HalfScreenW == -1)
-    //        {
-    //            _HalfScreenW = (Screen.width << 1);
-    //        }
-
-    //        return _HalfScreenW;
-    //    }
-    //}
-    //private static int _HalfScreenH = -1;
-    //public static int HalfScreenH
-    //{
-    //    get
-    //    {
-    //        if (_HalfScreenH == -1)
-    //        {
-    //            _HalfScreenH = (Screen.height << 1);
-    //        }
-    //        return _HalfScreenH;
-    //    }
-    //}
-    //private const float DEFAULT_SCREEN_W = 720f;
-    //private const float DEFAULT_SCREEN_H = 1280f;
 
     //tile原始大小，unity单位，64pixel, 100p/unit
 
@@ -40,7 +13,7 @@ public class GameLayout : MonoBehaviour
     private const float OrignalTileAspect = OrignalTileH / OrignalTileW;
 
     //可用游戏区距离屏幕两端世界距离
-    private const float BoundSpaceW = 0f;
+    private const float BoundSpaceW = 0.2f;
 
     //行列最大tile数
     public const int MAX_NUM = 9;
@@ -100,28 +73,26 @@ public class GameLayout : MonoBehaviour
 
 
         //--------------------自适应后tile大小
-        //tile为自适应需要缩放的scale
-        float tileScale = 1f;
-       
+
        bool bAutoSizeW = layout.UseableGameAreaAspect > OrignalTileAspect ? true : false;
         if (bAutoSizeW)
         {
             //可用区域aspect大于游戏区域(单个块的aspect)，以w为基准进行计算
             var w = OrignalTileW * MAX_NUM;
-            tileScale = layout.UseableGameAreaW /w;
+            layout.Scale = layout.UseableGameAreaW /w;
         }
         else
         {
             //可用区域aspect小于游戏区域(单个块的aspect)，以h为基准进行计算
             var h = OrignalTileH * MAX_NUM;
-            tileScale = layout.UseableGameAreaH / h;
+            layout.Scale = layout.UseableGameAreaH / h;
         }
-
+        
         //自适应后tile的H,W
-        layout.TileH = OrignalTileH * tileScale;
-        layout.TileW = OrignalTileW * tileScale;
+        layout.TileH = OrignalTileH * layout.Scale;
+        layout.TileW = OrignalTileW * layout.Scale;
 
-        Debug.Log("bW:" + bAutoSizeW + " scale:" + tileScale+" tw:"+ layout.TileW + " th:"+ layout.TileH);
+        Debug.Log("bW:" + bAutoSizeW + " scale:" + layout.Scale + " tw:"+ layout.TileW + " th:"+ layout.TileH);
 
         //---------------------游戏区域
         layout.GameAreaH = layout.TileH * MAX_NUM;
@@ -178,6 +149,8 @@ public struct TLayout
 
     public float TileW;
     public float TileH;
+    public float Scale;
+
 
     public Vector3 TileStartPos;
 

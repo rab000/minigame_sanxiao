@@ -1,7 +1,7 @@
 ﻿
 public class TileFactory
 {
-    public void CreateTile(int type)
+    public static void CreateTile(int type)
     {
         switch (type)
         {
@@ -10,7 +10,7 @@ public class TileFactory
         }
     }
 
-    public void CreateBGTile(int type)
+    public static void CreateBGTile(int type)
     {
         switch (type)
         {

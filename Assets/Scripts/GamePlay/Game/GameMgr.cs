@@ -202,19 +202,37 @@ public class GameMgr : MonoSingleton<GameMgr>
         //gg.transform.localScale = Vector3.one * 5;
 
 
-        Debug.Log("wh:"+ layout.TileW+" h:"+ layout.TileH);
+        //Debug.Log("wh:"+ layout.TileW+" h:"+ layout.TileH);
 
         pos.x = pos.x + offx;
         pos.y = pos.y - offy;
         pos.z = 0;
 
         go.transform.position = pos;
-
+        go.transform.localScale = Vector3.one * layout.Scale;
     }
 
     private void GenerateTile(int mapValue, int gridX, int gridY)
     {
 
+        //TileFactory.CreateTile(mapValue);
+
+        //var go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
+
+        //var trm = go.transform;
+        //go.transform.SetParent(bgTileRoot, false);
+
+        //Vector3 pos = layout.TileStartPos;
+
+        //float offx = gridX * layout.TileW;
+        //float offy = gridY * layout.TileH;
+
+
+        //pos.x = pos.x + offx;
+        //pos.y = pos.y - offy;
+        //pos.z = 0;
+
+        //go.transform.position = pos;
     }
 
     #endregion
