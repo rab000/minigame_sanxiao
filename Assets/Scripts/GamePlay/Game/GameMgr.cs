@@ -176,63 +176,45 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     }
 
-   
-
     private void GenerateBgTile(int mapValue,int gridX,int gridY)
     {
         //NTODO bgTile外显的计算
-
         //形容下bgTile的特殊处
         //left，down，right都有方块时，具体的ui取决与bgTile是否在边缘，
 
-        var go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
-
+        var go = TileFactory.CreateBGTile(1);
 
         var trm = go.transform;
         go.transform.SetParent(bgTileRoot,false);
 
         Vector3 pos = layout.TileStartPos;
-        
         float offx = gridX * layout.TileW;
         float offy = gridY * layout.TileH;
-
-        //var gg = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //gg.name = "sspp";
-        //gg.transform.position = pos;
-        //gg.transform.localScale = Vector3.one * 5;
-
-
-        //Debug.Log("wh:"+ layout.TileW+" h:"+ layout.TileH);
-
         pos.x = pos.x + offx;
         pos.y = pos.y - offy;
         pos.z = 0;
 
-        go.transform.position = pos;
-        go.transform.localScale = Vector3.one * layout.Scale;
+        trm.position = pos;
+        trm.localScale = Vector3.one * layout.Scale;
     }
 
     private void GenerateTile(int mapValue, int gridX, int gridY)
     {
+        if (mapValue == 0) return;
 
-        //TileFactory.CreateTile(mapValue);
+        var go = TileFactory.CreateTile(mapValue);
+        var trm = go.transform;
+        trm.SetParent(bgTileRoot, false);
+        Vector3 pos = layout.TileStartPos;
 
-        //var go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
+        float offx = gridX * layout.TileW;
+        float offy = gridY * layout.TileH;
+        pos.x = pos.x + offx;
+        pos.y = pos.y - offy;
+        pos.z = 0;
 
-        //var trm = go.transform;
-        //go.transform.SetParent(bgTileRoot, false);
-
-        //Vector3 pos = layout.TileStartPos;
-
-        //float offx = gridX * layout.TileW;
-        //float offy = gridY * layout.TileH;
-
-
-        //pos.x = pos.x + offx;
-        //pos.y = pos.y - offy;
-        //pos.z = 0;
-
-        //go.transform.position = pos;
+        trm.position = pos;
+        trm.localScale = Vector3.one * layout.Scale;
     }
 
     #endregion

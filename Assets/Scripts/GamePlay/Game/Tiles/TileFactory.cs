@@ -1,22 +1,47 @@
-﻿
+﻿using UnityEngine;
+
 public class TileFactory
 {
-    public static void CreateTile(int type)
+    public static GameObject CreateTile(int type)
     {
+
+        GameObject go = null;
+
         switch (type)
         {
             case 1:
+                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_blue");
+                break;
+            case 2:
+                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_green");
+                break;
+            case 3:
+                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_orange");
+                break;
+            case 4:
+                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_red");
+                break;
+            case 5:
+                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_yellow");
                 break;
         }
+
+        return go;
+
     }
 
-    public static void CreateBGTile(int type)
+    public static GameObject CreateBGTile(int type)
     {
+        GameObject go = null;
+
         switch (type)
         {
-            case 1:
+            default:
+                go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
                 break;
         }
+
+        return go;
     }
 }
 
