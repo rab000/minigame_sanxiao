@@ -8,6 +8,10 @@ public abstract class UIWin : UIBase {
 
     public Action OnClose;
 
+    public Action<Action> OnPlayOpenAnim;
+
+    public Action<Action> OnPlayCloseAnim;
+
     protected virtual void OnInitData()
     {
     }
@@ -38,12 +42,34 @@ public abstract class UIWin : UIBase {
 
         OnInitUI();
 
-        OnOpen?.Invoke();
+        //播放打开动画
+
+        if (null != OnPlayOpenAnim)
+        {
+            OnPlayOpenAnim(() =>
+            {
+                OnOpen?.Invoke();
+            });
+        }
+        else
+        {
+            OnOpen?.Invoke();
+        }
 
     }
 
+
+    protected virtual void PlayOpenAnim()
+    {
+
+    }
+
+    //播放打开关闭动画
+
     public override void Close(bool destroy = false)
     {
+
+
         if (destroy)
             Dispose();
         else
