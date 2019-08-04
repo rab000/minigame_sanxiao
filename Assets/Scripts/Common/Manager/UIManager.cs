@@ -10,21 +10,22 @@ public class UIManager : MonoSingleton<UIManager> {
 	
 	private static bool BeShowLog = true;
 
+    private static string Path = "Prefabs/ui/win/"; 
+
     #region mono
 
     Canvas _Canvas;
 
     Transform WinTrm;
 
-    Transform PanelTrm;
-
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         var canvasGo = GameObject.Find("Canvas");
         var canvasTrm = canvasGo.transform;
         _Canvas = canvasGo.GetComponent<Canvas>();
         WinTrm = canvasTrm.Find("winroot");
-        PanelTrm = canvasTrm.Find("panelroot");
+        
     }
 
 	#endregion 
@@ -34,42 +35,47 @@ public class UIManager : MonoSingleton<UIManager> {
 
 	private UIWin CurWin;
 
+    private string PreWinName;
+
 	private Dictionary<string,UIWin> winDic = new Dictionary<string,UIWin>();
 
-    public void OpenWin(string winName, bool destroyPreWin = true, Action OnOpen = null)
-	{
-		CloseCurWin(destroyPreWin);
+    public T Open<T>(string winName,Action OnOpen = null)where T: UIWin
+    {
+        T win;
 
 		if (winDic.ContainsKey (winName)) 
 		{
 			Log.i ("UIManager", "OpenWin", "打开已存在win winName" + winName, BeShowLog);
-			winDic [winName].OnOpen();
+            winDic[winName].gameObject.SetActive(true);
 
-            OnOpen?.Invoke();
+            winDic[winName].OnOpen = OnOpen;
+
+            winDic [winName].Open();
+
+            win = winDic[winName] as T;
 
         }
 		else
 		{
 			Log.i ("UIManager", "OpenWin", "打开不存在win winName" + winName, BeShowLog);
 
-            //NTODO 这里可以考虑剥离出来，由加载器统一加载，加载器来决定最终加载位置
-            //只传入相对路径
-
-			var winGo = Instantiate(Resources.Load ("Prefabs/ui/win/"+winName)) as GameObject;
+			var winGo = Instantiate(LoadMgr.Ins.Load (Path + winName)) as GameObject;
 
 			winGo.transform.SetParent (WinTrm,false);
 
-			//winDic [winName].OnOpen ();
-			UIWin win = winGo.GetComponent<UIWin> ();
+		    win = winGo.GetComponent<T> ();
 
-			CurWin = win;
+            win.OnOpen = OnOpen;
 
-			winDic.Add (winName,win);
+            CurWin = win;
 
-            win.OnOpen();
+			winDic.Add (winName, win);
 
-            OnOpen?.Invoke();
+            win.Open();
+
         }
+
+        return win;
 	}
 
 	public void CloseCurWin(bool destroy = true)
@@ -83,7 +89,7 @@ public class UIManager : MonoSingleton<UIManager> {
 					Log.e ("UIManager", "CloseCurWin", "关闭当前窗口时发现"+CurWin.Name+"不存在",BeShowLog);
 			}
 
-			CurWin.OnClose (destroy);
+			CurWin.Close (destroy);
 		}
 			
 		else 
@@ -101,7 +107,7 @@ public class UIManager : MonoSingleton<UIManager> {
 
 			winDic.Remove (winName);
 
-			win.OnClose (destroy);
+			win.Close (destroy);
 		}
 		else 
 		{
@@ -123,74 +129,6 @@ public class UIManager : MonoSingleton<UIManager> {
 		else
 		{
 			Log.e ("UIManager", "GetWindow", "没找到名字为"+winName+"的窗口",BeShowLog);
-
-			return default(T);
-		}
-	}
-
-	#endregion
-
-
-	#region panel
-
-	private Dictionary<string,UIPanel> panelDic = new Dictionary<string,UIPanel>();
-
-	public UIPanel OpenPanel(string panelName)
-	{
-		UIPanel _panel = null;
-
-		if (panelDic.ContainsKey (panelName)) 
-		{
-			Log.i ("UIManager", "OpenPanel", "打开已存在panel name" + panelName, BeShowLog);
-
-			panelDic [panelName].OnOpen();
-
-			_panel = panelDic [panelName];
-
-		}
-		else
-		{
-			Log.i ("UIManager", "OpenPanel", "打开不存在panel name" + panelName, BeShowLog);
-
-			var panelGo = Instantiate(Resources.Load ("Prefabs/ui/panel/"+panelName)) as GameObject;
-
-			panelGo.transform.SetParent (PanelTrm,false);
-
-			_panel = panelGo.GetComponent<UIPanel> ();
-
-			panelDic.Add (panelName,_panel);
-
-		}
-		//先加载，然后存到dic中
-		return _panel;
-	}
-
-	public void ClosePanel(string panelName,bool destroy = false)
-	{
-		if (panelDic.ContainsKey (panelName))
-		{
-			UIPanel panel = panelDic [panelName];
-
-			panelDic.Remove (panelName);
-
-			panel.OnClose (destroy);
-
-		}
-		else 
-		{
-			Log.e ("UIManager", "ClosePanel", "关闭panel"+panelName+"失败，找不到这个panel",BeShowLog);
-		}
-	}
-
-	public T GetPanel<T>(string panelName)where T : class
-	{
-		if(panelDic.ContainsKey(panelName))
-		{
-			return (T)Convert.ChangeType(panelDic[panelName], typeof(T));
-		}
-		else
-		{
-			Log.e ("UIManager", "GetPanel", "没找到名字为"+panelName+"的panel",BeShowLog);
 
 			return default(T);
 		}

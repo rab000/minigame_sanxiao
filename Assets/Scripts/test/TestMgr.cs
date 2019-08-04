@@ -7,10 +7,6 @@ public class TestMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-//        UIManager.GetIns().OpenWin("TestWin");
-        UIManager.Ins.OpenPanel("test/TestPanel");
-//        UIManager.GetIns().OpenPanel("TestPanel2");
-
 
     }
 

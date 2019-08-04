@@ -10,19 +10,19 @@ public class TileFactory
         switch (type)
         {
             case 1:
-                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_blue");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/colorTile_blue")) as GameObject;
                 break;
             case 2:
-                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_green");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/colorTile_green")) as GameObject;
                 break;
             case 3:
-                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_orange");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/colorTile_orange")) as GameObject;
                 break;
             case 4:
-                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_red");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/colorTile_red")) as GameObject;
                 break;
             case 5:
-                go = LoadMgr.Ins.Load("Prefabs/game/colorTile_yellow");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/colorTile_yellow")) as GameObject;
                 break;
         }
 
@@ -37,7 +37,7 @@ public class TileFactory
         switch (type)
         {
             default:
-                go = LoadMgr.Ins.Load("Prefabs/game/bgTile");
+                go = GameObject.Instantiate(LoadMgr.Ins.Load("Prefabs/game/bgTile")) as GameObject;
                 break;
         }
 

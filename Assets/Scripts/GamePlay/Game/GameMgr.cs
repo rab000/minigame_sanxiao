@@ -138,19 +138,20 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     private void Init()
     {
-        UIManager.Ins.OpenWin("gameui", true, () =>
-        {
-            InitAfterUICreate();
-        });
+
+        //NTODO 标记
+        var gameui = UIManager.Ins.Open<GameUI>("gameui", InitAfterUICreate);
+
     }
 
     private void InitAfterUICreate()
     {
+        
         //计算布局
 
         var gameui = UIManager.Ins.GetWindow<GameUI>("gameui");
 
-        layout = GameLayout.CaculateLayout(gameui.TopHudPos,gameui.DownHudPos);
+        layout = GameScn.CaculateLayout(gameui.TopHudPos,gameui.DownHudPos);
 
         //NTODO 载入关卡数据
         LoadMgr.Ins.LoadMapdate(CurLevel, InitMap);
@@ -159,11 +160,11 @@ public class GameMgr : MonoSingleton<GameMgr>
 
     private void InitMap(int[] mapdate)
     {
-        for (int y = 0; y < GameLayout.MAX_NUM; y++)
+        for (int y = 0; y < GameScn.MAX_NUM; y++)
         {
-            for (int x = 0; x < GameLayout.MAX_NUM; x++)
+            for (int x = 0; x < GameScn.MAX_NUM; x++)
             {
-                int index = y * GameLayout.MAX_NUM + x;
+                int index = y * GameScn.MAX_NUM + x;
 
                 int mapValue = mapdate[index];
 

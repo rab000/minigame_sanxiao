@@ -16,6 +16,8 @@ public class AppMgr : MonoSingleton<AppMgr>
     {
        MainMenu,
        Game,
+       Shop,
+       Setting,
        NULL
     }
 
@@ -34,6 +36,9 @@ public class AppMgr : MonoSingleton<AppMgr>
 
         switch (curState)
         {
+            case AppState.MainMenu:
+                //进主菜单
+                break;
             case AppState.Game:
                 //NTODO 这里要在ui做切换关卡操作
                 GameMgr.Ins.Open(1);

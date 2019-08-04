@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class UIBase : MonoBehaviour {
 
@@ -7,32 +8,22 @@ public class UIBase : MonoBehaviour {
 
 	public virtual void Awake()
 	{
-		Init ();
-	}
+        Name = gameObject.name;
+    }
 
-	public virtual void Init()
+	public virtual void Open()
 	{
-		Name = gameObject.name;
+
 	}
 
-	public virtual void OnOpen()
+	public virtual void Close(bool destroy = false)
 	{
-		
-		gameObject.SetActive(true);
-	
-	}
-
-	public virtual void OnClose(bool destroy = false)
-	{
-		Dispose();
-
-		if (destroy)
-            Destroy (gameObject);
-		else
-            gameObject.SetActive(false);
 
 	}
 
-	public virtual void Dispose(){}
+	public virtual void Dispose()
+    {
+        
+    }
 
 }
